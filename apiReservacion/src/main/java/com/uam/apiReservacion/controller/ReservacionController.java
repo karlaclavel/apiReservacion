@@ -1,14 +1,23 @@
 package com.uam.apiReservacion.controller;
 
-import com.uam.apiReservacion.model.UsuarioNuevo;
+import com.uam.apiReservacion.model.Hotel;
+import com.uam.apiReservacion.model.Usuario;
+import com.uam.apiReservacion.service.ApiHotelService;
+import com.uam.apiReservacion.service.ApiUsuarioService;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,61 +25,97 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("/apiReservacion")
 public class ReservacionController {
 	
-	@RequestMapping("/verificacion")
-	public String Ejecucion() {
-		return "La api principal (apiReservacion) esta recibiendo y enviando datos correctamente";
-	} 
-
 	@Autowired
-    private RestTemplate restTemplate;
+	private ApiHotelService apiHotelService;
 	
-	public ReservacionController(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
+	@Autowired
+	private ApiUsuarioService apiUsuarioService;
+
+	/*
+	 * LLAMADAS PARA API HOTELES
+	 */
+	
+	@GetMapping("/apihotel-listareducido")
+    public ResponseEntity<?> mostrarListaHotelesReducidos() {        
+        ResponseEntity<?> response = apiHotelService.mostrarListaHotelesReducidos();               
+        return response;
+    }
+	
+	@GetMapping("/apihotel-id/{id}")
+    public ResponseEntity<?> mostrarHotelbyId(@PathVariable Long id) {
+        ResponseEntity<?> response = apiHotelService.mostrarHotelbyId(id);   
+        return response;
+    }
+	
+	@GetMapping("/apihotel-listahoteles")
+    public ResponseEntity<?> mostrarListaCompletaHoteles() {        
+        ResponseEntity<?> response = apiHotelService.mostrarListaCompletaHoteles();        
+        return response;
+    }
+	
+	 @GetMapping("/apihotel-destino/{direccion}") 
+	    public ResponseEntity<?> buscarHotelesPorDestino(@PathVariable("direccion") String direccion) {
+	        ResponseEntity<?> response = apiHotelService.buscarHotelesPorDestino(direccion);
+	        return response;
+	    }
+    
+	@GetMapping("/apihotel-precio") /*http://localhost:8080/apiReservacion/apihotel-precio?precioMinimo=100&precioMaximo=200*/
+	public ResponseEntity<?> buscarHotelesPorPrecio(
+			@RequestParam("precioMinimo") BigDecimal precioMinimo, 
+			@RequestParam("precioMaximo") BigDecimal precioMaximo) {	
+		ResponseEntity<?> response = apiHotelService.buscarHotelesPorPrecio(precioMinimo, precioMaximo);
+        return response;
 	}
 	
-	@PostMapping("/llamar-api-usuariosCrear")
-    public ResponseEntity<?> agregarApiUsuriosCrear(@RequestBody UsuarioNuevo usuarioNuevo) {
-        String apiUsuariosURL = "http://localhost:8082/api/usuarios";
-        ResponseEntity<?> response = restTemplate.postForEntity(apiUsuariosURL, usuarioNuevo, String.class);       
-    	System.out.println("Respuesta de la API externa: " + response.getBody()); 
-
-    	return response;
-    }
-
-    @GetMapping("/llamar-api-usuariosLista")
-    public ResponseEntity<?> llamarApiUsuariosLista() {
-        String apiUsuariosURL = "http://localhost:8082/api/usuarios";
-        ResponseEntity<?> response = restTemplate.getForEntity(apiUsuariosURL, String.class);
-    	System.out.println("Respuesta de la API externa: Lista de Usuarios: " + response.getBody()); 
-
-        return response;
-    }
+	@GetMapping("/apihotel-popularidad/{popularidad}")
+	public ResponseEntity<?> buscarHotelesPorPopularidad(@PathVariable("popularidad") int popularidad) {
+		ResponseEntity<?> response = apiHotelService.buscarHotelesPorPopularidad(popularidad);
+		return response;
+	}
     
-    @GetMapping("/llamar-api-usuariosId")
-    public ResponseEntity<?> llamarApiUsuariosId(@PathVariable Long id) {
-        String apiUsuariosURL = "http://localhost:8082/api/usuarios/{id}";
-        ResponseEntity<?> response = restTemplate.getForEntity(apiUsuariosURL, String.class);
-    	System.out.println("Respuesta de la API externa: Usuarios con la id " + id + ": " + response.getBody()); 
-    	
-    	return response;
-    }
-    
-    @GetMapping("/llamar-api-hotelReducido")
-    public ResponseEntity<?> llamarApiHotelReducido() {
-        String apiHotelURL = "http://localhost:8081/api/Hotel";
-        ResponseEntity<?> response = restTemplate.getForEntity(apiHotelURL, String.class);       
-        System.out.println("Respuesta de la API externa: Lista de hoteles Reducida: " + response.getBody()); 
-        
+	@GetMapping("/apihotel-fotos/{id}")
+	public ResponseEntity<?> buscarFotosHotel(@PathVariable("id") Long id) {
+		ResponseEntity<?> response = apiHotelService.buscarFotosHotel(id);
+		return response;
+	}
+	
+	@GetMapping("/apihotel-habitaciones/{id}")
+	public ResponseEntity<?> buscarHabitacionesDisponibles(@PathVariable("id") Long id) {
+		ResponseEntity<?> response = apiHotelService.buscarHabitacionesDisponibles(id);
+		return response;
+	}
+	
+    /*
+	 * LLAMADAS PARA API USUARIOS
+	 */
+	
+	@GetMapping("/apiusuario-lista")
+    public ResponseEntity<?> mostrarListaUsuarios() {
+        ResponseEntity<?> response = apiUsuarioService.mostrarListaUsuarios();
         return response;
     }
 	
-    @GetMapping("/llamar-api-hotelId")
-    public ResponseEntity<?> llamarApiHotelId(@PathVariable Long id) {
-        String apiHotelURL = "http://localhost:8081/api/Hotel/{id}";
-        ResponseEntity<?> response = restTemplate.getForEntity(apiHotelURL, String.class);       
-        System.out.println("Repsuesta de la api externa: Hotel con la id " + id + ": " + response.getBody()); 
-        
+	@GetMapping("/apiusuario-id/{id}")
+    public ResponseEntity<?> mostrarUsuariobyId(@PathVariable Long id) {
+        ResponseEntity<?> response = apiUsuarioService.mostrarUsuariobyId(id);
         return response;
     }
+    
+	@PostMapping("/apiusuario-agregar")
+    public ResponseEntity<?> agregarUsuario(@RequestBody Usuario usuario) {
+        ResponseEntity<?> response = apiUsuarioService.agregarUsuario(usuario);
+    	return response;
+    }
 	
+	@PutMapping("/apiusuario-actualizar/{id}")
+	public ResponseEntity<?> actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuarioActualizado) {
+		ResponseEntity<?> response = apiUsuarioService.actualizarUsuario(id, usuarioActualizado);
+		return response;
+	}
+
+    
+    
+  
+	
+    
 }

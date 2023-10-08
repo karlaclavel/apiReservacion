@@ -6,16 +6,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
-@SpringBootApplication
+@SpringBootApplication 
 public class ApiReservacionApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApiReservacionApplication.class, args);
 	}
 	
-	@Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 
 }
