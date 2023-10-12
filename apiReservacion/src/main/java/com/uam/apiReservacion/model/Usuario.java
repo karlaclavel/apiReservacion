@@ -26,7 +26,7 @@ public class Usuario {
     private String nombre;
 
     @NotBlank
-    private String contraseña;
+    private String contrasena;
 
     @NotBlank
     private String direccion;

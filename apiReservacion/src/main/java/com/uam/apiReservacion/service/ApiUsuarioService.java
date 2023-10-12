@@ -21,4 +21,5 @@ public interface ApiUsuarioService {
 
 	ResponseEntity<?> actualizarUsuario(Long id, Usuario usuarioActualizado);
 	
+	 ResponseEntity<?> buscarUsuarioPorEmailYContrasena(String email, String contrasena);
 }
