@@ -1,6 +1,7 @@
 package com.uam.apiReservacion.controller;
 
 import com.uam.apiReservacion.model.Hotel;
+import com.uam.apiReservacion.model.Reserva;
 import com.uam.apiReservacion.model.Usuario;
 import com.uam.apiReservacion.service.ApiHotelService;
 import com.uam.apiReservacion.service.ApiUsuarioService;
@@ -85,6 +86,15 @@ public class ReservacionController {
 		return response;
 	}
 	
+	@PutMapping("/apihotel-actualizarHabitacion/{id_hotel}/{id_habitacion}")
+	public ResponseEntity<?> actualizarHabitacion(@PathVariable("id_hotel") Long id_hotel,@PathVariable("id_habitacion") Long id_habitacion) {
+		ResponseEntity<?> response = apiHotelService.actualizarHabitacion(id_hotel, id_habitacion);
+		return response;
+
+	}
+	
+	
+	
     /*
 	 * LLAMADAS PARA API USUARIOS
 	 */
@@ -112,6 +122,14 @@ public class ReservacionController {
 		ResponseEntity<?> response = apiUsuarioService.actualizarUsuario(id, usuarioActualizado);
 		return response;
 	}
+	
+	@PostMapping("/apiusuario-reserva/{id}")
+    public ResponseEntity<?> agregarReserva(@PathVariable("id") Long id, @RequestBody Reserva reserva) {
+        ResponseEntity<?> response = apiUsuarioService.agregarReserva(id, reserva);
+    	return response;
+    }
+	
+	
 
     
     
