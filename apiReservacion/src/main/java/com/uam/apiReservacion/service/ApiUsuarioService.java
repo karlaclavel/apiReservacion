@@ -25,4 +25,5 @@ public interface ApiUsuarioService {
 	ResponseEntity<?> agregarReserva(Long id, Reserva reserva);
 
 	
+	 ResponseEntity<?> buscarUsuarioPorEmailYContrasena(String email, String contrasena);
 }

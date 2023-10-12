@@ -60,6 +60,18 @@ public class ApiUsuarioServiceImpl implements ApiUsuarioService {
         return response;
     }
 
+    public ResponseEntity<?> buscarUsuarioPorEmailYContrasena(String email, String contrasena) {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("http://localhost:8082/api/usuario/login");
+        builder.queryParam("email", email);
+        builder.queryParam("contrasena", contrasena);
+        String apiUsuarioURL = builder.toUriString();
+        ResponseEntity<?> response = restTemplate.getForEntity(apiUsuarioURL, String.class);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return response;
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     public ResponseEntity<?> agregarReserva(Long id, Reserva reserva) {
     	UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("http://localhost:8082/api/usuario/{id}/reserva");
 		String apiUsuarioURL = builder.buildAndExpand(id).toUriString();
