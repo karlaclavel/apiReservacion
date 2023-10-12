@@ -17,6 +17,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.uam.apiReservacion.model.Hotel;
 import com.uam.apiReservacion.service.ApiHotelService;
 
 import io.swagger.models.HttpMethod;
