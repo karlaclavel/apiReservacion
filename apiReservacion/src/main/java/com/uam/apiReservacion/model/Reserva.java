@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 
 @Data
@@ -19,7 +20,9 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-	private Long numero_reserva;
+	private Long id_hotel;
+	
+	private String nombre_hotel;
 	
 	private Long id_habitacion;
 	
@@ -28,6 +31,10 @@ public class Reserva {
 	private String tipo_habitacion;
 	
 	private BigDecimal precio_habitacion;
+	
+	private Date fecha_entrada;
+	
+	private Date fecha_salida;
 	
     @ManyToOne
     private Usuario usuario;

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.uam.apiReservacion.model.Reserva;
 import com.uam.apiReservacion.model.Usuario;
 import com.uam.apiReservacion.service.ApiUsuarioService;
 
@@ -51,12 +52,23 @@ public class ApiUsuarioServiceImpl implements ApiUsuarioService {
     
     public ResponseEntity<?> actualizarUsuario(Long id, Usuario usuarioActualizado) {
     	UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("http://localhost:8082/api/usuario/{id}");
-		String apiHotelURL = builder.buildAndExpand(id).toUriString();
-        ResponseEntity<?> response = restTemplate.getForEntity(apiHotelURL, String.class);
+		String apiUsuarioURL = builder.buildAndExpand(id).toUriString();
+        ResponseEntity<?> response = restTemplate.getForEntity(apiUsuarioURL, String.class);
 
         System.out.println("Respuesta de ApiUsuario: Usuario actualizado con ID " + id + ": " + response.getBody()); 
 
         return response;
+    }
+
+    public ResponseEntity<?> agregarReserva(Long id, Reserva reserva) {
+    	UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("http://localhost:8082/api/usuario/{id}/reserva");
+		String apiUsuarioURL = builder.buildAndExpand(id).toUriString();
+        ResponseEntity<?> response = restTemplate.postForEntity(apiUsuarioURL, reserva, String.class);
+        
+        System.out.println("Respuesta de ApiUsuario: Reserva con la id " + id + ": " + response.getBody()); 
+        
+        return response;
+    	
     }
 
 }

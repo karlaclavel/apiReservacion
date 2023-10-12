@@ -1,5 +1,6 @@
 package com.uam.apiReservacion.service;
 
+import com.uam.apiReservacion.model.Reserva;
 import com.uam.apiReservacion.model.Usuario;
 import com.uam.apiReservacion.repository.UsuarioRepository;
 
@@ -20,5 +21,8 @@ public interface ApiUsuarioService {
 	ResponseEntity<?> agregarUsuario(Usuario usuario);
 
 	ResponseEntity<?> actualizarUsuario(Long id, Usuario usuarioActualizado);
+
+	ResponseEntity<?> agregarReserva(Long id, Reserva reserva);
+
 	
 }

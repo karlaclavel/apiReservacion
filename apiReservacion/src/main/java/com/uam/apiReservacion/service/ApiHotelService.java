@@ -28,6 +28,8 @@ public interface ApiHotelService {
 
 	ResponseEntity<?> buscarHabitacionesDisponibles(Long id);
 
+	ResponseEntity<?> actualizarHabitacion(Long id_hotel, Long id_habitacion);
+
 	
 
 }
