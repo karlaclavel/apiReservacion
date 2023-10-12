@@ -1,9 +1,20 @@
 package com.uam.apiReservacion.controller;
 
+import com.uam.apiReservacion.exceptions.BadRequestException;
+import com.uam.apiReservacion.exceptions.InternalServerErrorException;
+import com.uam.apiReservacion.exceptions.UserApiCommunicationException;
 import com.uam.apiReservacion.model.Hotel;
 import com.uam.apiReservacion.model.Usuario;
 import com.uam.apiReservacion.service.ApiHotelService;
 import com.uam.apiReservacion.service.ApiUsuarioService;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import org.springframework.web.client.RestTemplate;
 
 @RestController
@@ -101,21 +113,31 @@ public class ReservacionController {
         return response;
     }
     
+	@Operation(summary = "Agregar un nuevo usuario", description = "Permite agregar un nuevo usuario al sistema.",tags={"Usuario"})
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "201", description = "Usuario creado", content = @Content(schema = @Schema(implementation = Usuario.class))),
+    	@ApiResponse(responseCode = "400", description = "Los datos del usuario no son válidos",content = @Content(schema = @Schema(implementation = Usuario.class))),
+    	@ApiResponse(responseCode = "500", description = "Error interno del servidor",content = @Content(schema = @Schema(implementation = Usuario.class)))})
 	@PostMapping("/apiusuario-agregar")
     public ResponseEntity<?> agregarUsuario(@RequestBody Usuario usuario) {
-        ResponseEntity<?> response = apiUsuarioService.agregarUsuario(usuario);
-    	return response;
+    try {
+        return apiUsuarioService.agregarUsuario(usuario);
+    } catch (BadRequestException e) {
+        // Manejar la excepción BadRequestException aquí
+        return ResponseEntity.badRequest().body(e.getMessage());
+    } catch (InternalServerErrorException e) {
+        // Manejar la excepción InternalServerErrorException aquí
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    } catch (UserApiCommunicationException e) {
+        // Manejar la excepción UserApiCommunicationException aquí
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error en la informacion del usuario");
     }
+}
 	
 	@PutMapping("/apiusuario-actualizar/{id}")
 	public ResponseEntity<?> actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuarioActualizado) {
 		ResponseEntity<?> response = apiUsuarioService.actualizarUsuario(id, usuarioActualizado);
 		return response;
 	}
-
-    
-    
-  
-	
     
 }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.uam.apiHotel.repository.HotelRepository;
 import com.uam.apiReservacion.model.Hotel;
 import com.uam.apiReservacion.service.ApiHotelService;
 
