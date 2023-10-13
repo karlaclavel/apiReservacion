@@ -114,6 +114,7 @@ public class ApiUsuarioServiceImpl implements ApiUsuarioService {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
     public ResponseEntity<?> agregarReserva(Long id, Reserva reserva) {
     	UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("http://localhost:8082/api/usuario/{id}/reserva");
 		String apiUsuarioURL = builder.buildAndExpand(id).toUriString();
