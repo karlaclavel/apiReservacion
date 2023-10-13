@@ -66,7 +66,7 @@ public class ApiUsuarioServiceImpl implements ApiUsuarioService {
     }
 
     
-    public ResponseEntity<Usuario> agregarUsuario(Usuario usuario) {
+    public ResponseEntity<?> agregarUsuario(Usuario usuario) {
         String apiUsuarioURL = "http://localhost:8082/api/usuario";
         System.out.println("Usuario info: " + usuario);
     
@@ -82,7 +82,7 @@ public class ApiUsuarioServiceImpl implements ApiUsuarioService {
                 throw new BadRequestException("Error en la solicitud al agregar usuario");
             } else {
                 System.out.println("Respuesta de ApiUsuario: Error al agregar usuario");
-                throw new InternalServerErrorException("Error al agregar usuario");
+                throw new InternalServerErrorException("Error de servidor");
             }
         } catch (RestClientException e) {
             System.out.println("Error de comunicación con la API de usuarios: " + e.getMessage());

@@ -117,6 +117,7 @@ public class ReservacionController {
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "201", description = "Usuario creado", content = @Content(schema = @Schema(implementation = Usuario.class))),
     	@ApiResponse(responseCode = "400", description = "Los datos del usuario no son válidos",content = @Content(schema = @Schema(implementation = Usuario.class))),
+		@ApiResponse(responseCode = "409", description = "Los datos del usuario no son válidos",content = @Content(schema = @Schema(implementation = Usuario.class))),
     	@ApiResponse(responseCode = "500", description = "Error interno del servidor",content = @Content(schema = @Schema(implementation = Usuario.class)))})
 	@PostMapping("/apiusuario-agregar")
     public ResponseEntity<?> agregarUsuario(@RequestBody Usuario usuario) {
@@ -124,13 +125,13 @@ public class ReservacionController {
         return apiUsuarioService.agregarUsuario(usuario);
     } catch (BadRequestException e) {
         // Manejar la excepción BadRequestException aquí
-        return ResponseEntity.badRequest().body(e.getMessage());
+        return ResponseEntity.badRequest().body("Error en la informacion del usuario");
     } catch (InternalServerErrorException e) {
         // Manejar la excepción InternalServerErrorException aquí
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor");
     } catch (UserApiCommunicationException e) {
         // Manejar la excepción UserApiCommunicationException aquí
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error en la informacion del usuario");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Error en la informacion del usuario");
     }
 }
 	
