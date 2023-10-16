@@ -1,17 +1,10 @@
 package com.uam.apiReservacion.service.impl;
 
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
@@ -26,12 +19,6 @@ import com.uam.apiReservacion.model.Usuario;
 import com.uam.apiReservacion.service.ApiUsuarioService;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
 
 
 @Api(tags = "Usuarios") // Etiqueta principal para el grupo de operaciones relacionadas con usuarios
@@ -114,6 +101,7 @@ public class ApiUsuarioServiceImpl implements ApiUsuarioService {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
     public ResponseEntity<?> agregarReserva(Long id, Reserva reserva) {
     	UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("http://localhost:8082/api/usuario/{id}/reserva");
 		String apiUsuarioURL = builder.buildAndExpand(id).toUriString();

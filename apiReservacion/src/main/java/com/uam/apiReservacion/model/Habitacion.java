@@ -1,6 +1,5 @@
 package com.uam.apiReservacion.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,11 +10,8 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 public class Habitacion {
 	
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     private String numero ;
@@ -26,8 +22,7 @@ public class Habitacion {
     
     private Boolean disponible;
 
-    @ManyToOne
-    private Hotel hotel;
+    private String fotoPortada;
 
 }
 

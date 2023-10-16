@@ -18,9 +18,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -93,8 +95,16 @@ public class ReservacionController {
 	}
 	
 	@GetMapping("/apihotel-habitaciones/{id}")
-	public ResponseEntity<?> buscarHabitacionesDisponibles(@PathVariable("id") Long id) {
-		ResponseEntity<?> response = apiHotelService.buscarHabitacionesDisponibles(id);
+	public ResponseEntity<?> buscarHabitaciones(@PathVariable("id") Long id) {
+		ResponseEntity<?> response = apiHotelService.buscarHabitaciones(id);
+		return response;
+	}
+	@GetMapping("/apihotel-habitaciones")
+	public ResponseEntity<?> buscarHabitacionesDisponiblesPorFecha(
+			@RequestParam("idHotel") Long idHotel,
+			@RequestParam("fechaInicio") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio,
+			@RequestParam("fechaFin") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin) {
+		ResponseEntity<?> response = apiHotelService.buscarHabitacionesDisponiblesPorFecha(idHotel,fechaInicio,fechaFin);
 		return response;
 	}
 	
