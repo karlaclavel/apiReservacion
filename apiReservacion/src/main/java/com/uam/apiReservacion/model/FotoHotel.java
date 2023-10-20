@@ -17,7 +17,8 @@ public class FotoHotel {
 	 private Long id;
 
 	 private String foto;
-
+	 
 	 @ManyToOne
 	 private Hotel hotel;
+	 
 }

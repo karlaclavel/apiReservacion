@@ -8,6 +8,7 @@ import com.uam.apiReservacion.model.Reserva;
 import com.uam.apiReservacion.model.Usuario;
 import com.uam.apiReservacion.service.ApiHotelService;
 import com.uam.apiReservacion.service.ApiUsuarioService;
+import com.uam.apiReservacion.model.LoginRequest;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -18,9 +19,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +36,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.web.client.RestTemplate;
+
+/*
+ * http://localhost:8080/apiReservacion/
+ */
 
 @RestController
 @RequestMapping("/apiReservacion")
@@ -72,10 +79,8 @@ public class ReservacionController {
 	        return response;
 	    }
     
-	@GetMapping("/apihotel-precio") /*http://localhost:8080/apiReservacion/apihotel-precio?precioMinimo=100&precioMaximo=200*/
-	public ResponseEntity<?> buscarHotelesPorPrecio(
-			@RequestParam("precioMinimo") BigDecimal precioMinimo, 
-			@RequestParam("precioMaximo") BigDecimal precioMaximo) {	
+	@GetMapping("/apihotel-precio/{precioMinimo}/{precioMaximo}")
+	public ResponseEntity<?> buscarHotelesPorPrecio(@PathVariable("precioMinimo") BigDecimal precioMinimo, @PathVariable("precioMaximo") BigDecimal precioMaximo) {	
 		ResponseEntity<?> response = apiHotelService.buscarHotelesPorPrecio(precioMinimo, precioMaximo);
         return response;
 	}
@@ -91,10 +96,33 @@ public class ReservacionController {
 		ResponseEntity<?> response = apiHotelService.buscarFotosHotel(id);
 		return response;
 	}
-	
+	/*
 	@GetMapping("/apihotel-habitaciones/{id}")
 	public ResponseEntity<?> buscarHabitacionesDisponibles(@PathVariable("id") Long id) {
 		ResponseEntity<?> response = apiHotelService.buscarHabitacionesDisponibles(id);
+		return response;
+	}
+	
+	
+	@PutMapping("/apihotel-actualizarHabitacion/{id_hotel}/{id_habitacion}")
+	public ResponseEntity<?> actualizarHabitacion(@PathVariable("id_hotel") Long id_hotel,@PathVariable("id_habitacion") Long id_habitacion) {
+		ResponseEntity<?> response = apiHotelService.actualizarHabitacion(id_hotel, id_habitacion);
+		return response;
+	}
+	*/
+	
+	@GetMapping("/apihotel-habitaciones/{id}")
+	public ResponseEntity<?> buscarHabitaciones(@PathVariable("id") Long id) {
+		ResponseEntity<?> response = apiHotelService.buscarHabitaciones(id);
+		return response;
+	}
+	
+	@GetMapping("/apihotel-habitaciones")
+	public ResponseEntity<?> buscarHabitacionesDisponiblesPorFecha(
+			@RequestParam("idHotel") Long idHotel,
+			@RequestParam("fechaInicio") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio,
+			@RequestParam("fechaFin") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin) {
+		ResponseEntity<?> response = apiHotelService.buscarHabitacionesDisponiblesPorFecha(idHotel,fechaInicio,fechaFin);
 		return response;
 	}
 	
@@ -102,9 +130,7 @@ public class ReservacionController {
 	public ResponseEntity<?> actualizarHabitacion(@PathVariable("id_hotel") Long id_hotel,@PathVariable("id_habitacion") Long id_habitacion) {
 		ResponseEntity<?> response = apiHotelService.actualizarHabitacion(id_hotel, id_habitacion);
 		return response;
-
 	}
-	
 	
 	
     /*
@@ -130,19 +156,20 @@ public class ReservacionController {
     	@ApiResponse(responseCode = "500", description = "Error interno del servidor",content = @Content(schema = @Schema(implementation = Usuario.class)))})
 	@PostMapping("/apiusuario-agregar")
     public ResponseEntity<?> agregarUsuario(@RequestBody Usuario usuario) {
-    try {
-        return apiUsuarioService.agregarUsuario(usuario);
-    } catch (BadRequestException e) {
-        // Manejar la excepción BadRequestException aquí
-        return ResponseEntity.badRequest().body(e.getMessage());
-    } catch (InternalServerErrorException e) {
-        // Manejar la excepción InternalServerErrorException aquí
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-    } catch (UserApiCommunicationException e) {
-        // Manejar la excepción UserApiCommunicationException aquí
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error en la informacion del usuario");
-    }
-}
+	    try {
+	        ResponseEntity<?> response = apiUsuarioService.agregarUsuario(usuario);
+	        return response;
+	    } catch (BadRequestException e) {
+	        // Manejar la excepción BadRequestException aquí
+	        return ResponseEntity.badRequest().body(e.getMessage());
+	    } catch (InternalServerErrorException e) {
+	        // Manejar la excepción InternalServerErrorException aquí
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+	    } catch (UserApiCommunicationException e) {
+	        // Manejar la excepción UserApiCommunicationException aquí
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error en la informacion del usuario");
+	    }
+	}
 	
 	@PutMapping("/apiusuario-actualizar/{id}")
 	public ResponseEntity<?> actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuarioActualizado) {
@@ -154,6 +181,18 @@ public class ReservacionController {
     public ResponseEntity<?> agregarReserva(@PathVariable("id") Long id, @RequestBody Reserva reserva) {
         ResponseEntity<?> response = apiUsuarioService.agregarReserva(id, reserva);
     	return response;
+    }
+	
+	@PostMapping("/apiusuario-autentificar")
+    public ResponseEntity<?> autentificarUsuario(@RequestBody LoginRequest loginRequest) {
+		ResponseEntity<?> response = apiUsuarioService.autentificarUsuario(loginRequest);
+		return response;
+	}
+	
+	@GetMapping("/apiusuario-email/{email}")
+    public ResponseEntity<?> mostrarUsuariobyEmail(@PathVariable String email) {
+        ResponseEntity<?> response = apiUsuarioService.mostrarUsuariobyEmail(email);
+        return response;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.uam.apiReservacion.service;
 
+import com.uam.apiReservacion.model.LoginRequest;
 import com.uam.apiReservacion.model.Reserva;
 import com.uam.apiReservacion.model.Usuario;
 import com.uam.apiReservacion.repository.UsuarioRepository;
@@ -24,6 +25,11 @@ public interface ApiUsuarioService {
 
 	ResponseEntity<?> agregarReserva(Long id, Reserva reserva);
 
-	
-	 ResponseEntity<?> buscarUsuarioPorEmailYContrasena(String email, String contrasena);
+	ResponseEntity<?> buscarUsuarioPorEmailYContrasena(String email, String contrasena);
+
+	ResponseEntity<?> autentificarUsuario(LoginRequest loginRequest);
+
+	ResponseEntity<?> mostrarUsuariobyEmail(String email);
+
+
 }

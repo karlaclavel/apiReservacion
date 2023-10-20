@@ -6,16 +6,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.uam.apiReservacion.model.LoginRequest;
 import com.uam.apiReservacion.model.Usuario;
-import com.uam.apiReservacion.repository.UsuarioRepository;
 import com.uam.apiReservacion.service.ApiUsuarioService;
 
 @Controller
 public class AuthController {
 	
 	@Autowired
-	private ApiUsuarioService usuarioS;
+	private ApiUsuarioService usuarioService;
 	
+	/*
     @GetMapping("/login")
     public String login() {
         return "login";
@@ -23,7 +24,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario usuario) {
-        ResponseEntity<?> response = usuarioS.buscarUsuarioPorEmailYContrasena(usuario.getEmail(), usuario.getContrasena());
+        ResponseEntity<?> response = usuarioS.buscarUsuarioPorEmailYContrasena(usuario.getEmail(), usuario.getContraseña());
 
         if (response.getStatusCode().is2xxSuccessful()) {
             return ResponseEntity.ok("Autenticación exitosa");
@@ -36,4 +37,6 @@ public class AuthController {
     public String dashboard() {
         return "dashboard"; 
     }
+    */
+	
 }

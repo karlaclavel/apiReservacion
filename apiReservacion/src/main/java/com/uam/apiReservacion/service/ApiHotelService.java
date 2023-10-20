@@ -1,6 +1,7 @@
 package com.uam.apiReservacion.service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -25,10 +26,15 @@ public interface ApiHotelService {
 	ResponseEntity<?> buscarHotelesPorPopularidad(int popularidad);
 
 	ResponseEntity<?> buscarFotosHotel(Long id);
-
+/*
 	ResponseEntity<?> buscarHabitacionesDisponibles(Long id);
-
+ */
+	
 	ResponseEntity<?> actualizarHabitacion(Long id_hotel, Long id_habitacion);
+
+	ResponseEntity<?> buscarHabitaciones(Long id);
+
+	ResponseEntity<?> buscarHabitacionesDisponiblesPorFecha(Long idHotel, Date fechaInicio, Date fechaFin);
 
 	
 

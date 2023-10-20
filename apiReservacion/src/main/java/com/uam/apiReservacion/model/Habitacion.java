@@ -25,6 +25,8 @@ public class Habitacion {
     private BigDecimal precio ;
     
     private Boolean disponible;
+    
+    private String fotoPortada;
 
     @ManyToOne
     private Hotel hotel;
