@@ -3,14 +3,11 @@ package com.uam.apiReservacion.controller;
 import com.uam.apiReservacion.exceptions.BadRequestException;
 import com.uam.apiReservacion.exceptions.InternalServerErrorException;
 import com.uam.apiReservacion.exceptions.UserApiCommunicationException;
-import com.uam.apiReservacion.model.Hotel;
 import com.uam.apiReservacion.model.Reserva;
 import com.uam.apiReservacion.model.Usuario;
 import com.uam.apiReservacion.service.ApiHotelService;
 import com.uam.apiReservacion.service.ApiUsuarioService;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,7 +16,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,8 +29,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/apiReservacion")
@@ -160,9 +154,9 @@ public class ReservacionController {
 		return response;
 	}
 	
-	@PostMapping("/apiusuario-reserva/{id}")
-    public ResponseEntity<?> agregarReserva(@PathVariable("id") Long id, @RequestBody Reserva reserva) {
-        ResponseEntity<?> response = apiUsuarioService.agregarReserva(id, reserva);
+	@PostMapping("/apiusuario-reserva")
+    public ResponseEntity<?> agregarReserva(@RequestBody Reserva reserva) {
+        ResponseEntity<?> response = apiUsuarioService.agregarReserva(reserva);
     	return response;
     }
 

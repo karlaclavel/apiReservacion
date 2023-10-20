@@ -1,5 +1,6 @@
 package com.uam.apiReservacion.service.impl;
 
+import com.uam.apiReservacion.model.Reserva;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.uam.apiReservacion.exceptions.BadRequestException;
 import com.uam.apiReservacion.exceptions.InternalServerErrorException;
 import com.uam.apiReservacion.exceptions.UserApiCommunicationException;
-import com.uam.apiReservacion.model.Reserva;
 import com.uam.apiReservacion.model.Usuario;
 import com.uam.apiReservacion.service.ApiUsuarioService;
 
@@ -102,12 +102,12 @@ public class ApiUsuarioServiceImpl implements ApiUsuarioService {
             return ResponseEntity.notFound().build();
         }
     }
-    public ResponseEntity<?> agregarReserva(Long id, Reserva reserva) {
-    	UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("http://localhost:8082/api/usuario/{id}/reserva");
-		String apiUsuarioURL = builder.buildAndExpand(id).toUriString();
+    public ResponseEntity<?> agregarReserva(Reserva reserva) {
+    	UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("http://localhost:8082/api/usuario/reserva");
+		String apiUsuarioURL = builder.buildAndExpand().toUriString();
         ResponseEntity<?> response = restTemplate.postForEntity(apiUsuarioURL, reserva, String.class);
         
-        System.out.println("Respuesta de ApiUsuario: Reserva con la id " + id + ": " + response.getBody()); 
+        System.out.println("Respuesta de ApiUsuario: Reserva con la id : " + response.getBody());
         
         return response;
     	
